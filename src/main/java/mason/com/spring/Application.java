@@ -26,14 +26,14 @@ public class Application {
     public String area_type(@RequestParam(value = "area") String area) {
         boolean onlyType = true;
         String SQL = String.format("select type from shop where Area = '%s' group by type",area);
-        System.out.println(SQL);
         return json(SQL, onlyType);
     }
 
-    @GetMapping("/area")
-    public String area(@RequestParam(value = "name", defaultValue = "World") String name) {
+    @GetMapping("/shop")
+    public String shop(@RequestParam(value = "area") String area,@RequestParam(value = "type") String type) {
         boolean onlyType = false;
-        return json("select * from shop", onlyType);
+        String SQL = String.format("select * from shop where Area = '%s' and type = '%s'",area,type);
+        return json(SQL, onlyType);
     }
 
     public String json(String SQL, boolean onlyType) {
@@ -84,7 +84,6 @@ public class Application {
 
 
         if (onlyType) {
-            System.out.println(jsonString);
             Gson jsongson = new Gson();
             jsongson.toJson(jsonString);
         }
