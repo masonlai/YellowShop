@@ -3,11 +3,20 @@ package mason.com.spring;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.File;
 import java.sql.*;
-
 
 public class ReadCSVintoSQLite {
     public static void main(String[] args) throws SQLException {
+        //if db, delete it
+        File db = new File("shop.db");
+        if (db.delete()) {
+            System.out.println("Deleted the db: " + db.getName());
+        } else {
+            System.out.println("Failed to delete the db.");
+        }
+
+
 
         //database connection
         Connection c = null;
@@ -60,6 +69,7 @@ public class ReadCSVintoSQLite {
             e.printStackTrace();
         }
 
+        //select sql execution
         ResultSet rs = stmt.executeQuery( "SELECT * FROM Shop;" );
         while ( rs.next() ) {
             String  Name = rs.getString("Name");
@@ -76,5 +86,7 @@ public class ReadCSVintoSQLite {
             System.out.println( "Type = " + Type );
             System.out.println();
         }
+        c.close();
+        stmt.close();
     }
 }
